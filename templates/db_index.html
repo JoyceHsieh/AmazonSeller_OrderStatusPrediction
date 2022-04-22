@@ -1,0 +1,2807 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Dashboard</title>
+        {% block styles %}
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+        <link href="{{url_for('static', filename='css/db_styles.css')}}" rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+        {% endblock %}
+    </head>
+    <body class="sb-nav-fixed">
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <!-- Navbar Brand-->
+            <a class="navbar-brand ps-3" href="/">Amazon Seller</a>
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+            <!-- Navbar Search-->
+            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                <div class="input-group">
+                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+                </div>
+            </form>
+            <!-- Navbar-->
+            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#!">Settings</a></li>
+                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="#!">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <div class="sb-sidenav-menu-heading">Core</div>
+                            <a class="nav-link" href="/dashboard">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Dashboard
+                            </a>
+                            <div class="sb-sidenav-menu-heading">Data Science</div>
+                            <a class="nav-link" href="/imbalance">
+                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                Imbalance
+                            </a>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Over sampling
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="/SMOTE">SMOTE</a>
+                                    <a class="nav-link" href="#">ADASYN</a>
+                                </nav>
+                            </div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                Under sampling
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapsePages" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="/NearMiss">NearMiss</a>
+                                    <a class="nav-link" href="#">ENN</a>
+                                </nav>
+                            </div>
+
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsecluster" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Cluster
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapsecluster" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                  <a class="nav-link" href="/Cluster">K-Means</a>
+                                  <a class="nav-link" href="#">PCA</a>
+                                </nav>
+                            </div>
+                            <div class="sb-sidenav-menu-heading">Data Analysis</div>
+                            <a class="nav-link" href="/charts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                Charts
+                            </a>
+                            <a class="nav-link" href="/tables">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Tables
+                            </a>
+                        </div>
+                    </div>
+                    <div class="sb-sidenav-footer">
+                        <div class="small">Logged in as:</div>
+                        User
+                    </div>
+                </nav>
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">Dashboard</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">Dashboard</li>
+                        </ol>
+                        <div class="row">
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-primary text-white mb-4">
+                                    <div class="card-body">Knn Model</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="/knnmodel">View Details</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-warning text-white mb-4">
+                                    <div class="card-body">Logistic Regression</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="/lgmodel">View Details</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-success text-white mb-4">
+                                    <div class="card-body">Decision Tree</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="/dtmodel">View Details</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-danger text-white mb-4">
+                                    <div class="card-body">Naive Bayes</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link" href="/nbmodel">View Details</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fas fa-chart-area me-1"></i>
+                                        Total_Sales & Shiping_Fee Overview
+                                    </div>
+                                    <iframe src="https://s3.us-west-2.amazonaws.com/gis.api.test/TSSFO.html"  width="1000" height="500"></iframe>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fas fa-chart-area me-1"></i>
+                                        Area Chart By Month
+                                    </div>
+                                    <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fas fa-chart-bar me-1"></i>
+                                        Top 10 City in Sales
+                                    </div>
+                                    <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                DataTable 
+                            </div>
+                            <div class="card-body">
+                                <table id="datatablesSimple">
+                                        <thead>
+                                          <tr style="text-align: right;">
+                                            <th></th>
+                                            <th>order_no</th>
+                                            <th>Order_Date</th>
+                                            <th>Time</th>
+                                            <th>Date</th>
+                                            <th>buyer</th>
+                                            <th>ship_city</th>
+                                            <th>ship_state</th>
+                                            <th>sku</th>
+                                            <th>quantity</th>
+                                            <th>shipping_fee</th>
+                                            <th>cod</th>
+                                            <th>order_status</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr>
+                                            <th>0</th>
+                                            <td>405-9763961-5211537</td>
+                                            <td>2021-07-18</td>
+                                            <td>10:38 pm IST</td>
+                                            <td>Sun</td>
+                                            <td>Mr.</td>
+                                            <td>chandigarh</td>
+                                            <td>chandigarh</td>
+                                            <td>SKU:  2X-3C0F-KNJE</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>1</th>
+                                            <td>404-3964908-7850720</td>
+                                            <td>2021-10-19</td>
+                                            <td>6:05 pm IST</td>
+                                            <td>Tue</td>
+                                            <td>Minam</td>
+                                            <td>pasighat</td>
+                                            <td>arunachal pradesh</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>1</td>
+                                            <td>60.18</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>2</th>
+                                            <td>171-8103182-4289117</td>
+                                            <td>2021-11-28</td>
+                                            <td>10:20 pm IST</td>
+                                            <td>Sun</td>
+                                            <td>yatipertin</td>
+                                            <td>pasighat</td>
+                                            <td>arunachal pradesh</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>1</td>
+                                            <td>60.18</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>3</th>
+                                            <td>405-3171677-9557154</td>
+                                            <td>2021-07-28</td>
+                                            <td>4:06 am IST</td>
+                                            <td>Wed</td>
+                                            <td>aciya</td>
+                                            <td>devarakonda</td>
+                                            <td>telangana</td>
+                                            <td>SKU:  AH-J3AO-R7DN</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>4</th>
+                                            <td>402-8910771-1215552</td>
+                                            <td>2021-09-28</td>
+                                            <td>2:50 pm IST</td>
+                                            <td>Tue</td>
+                                            <td>Susmita</td>
+                                            <td>mumbai</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  KL-7WAA-Z82I</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>5</th>
+                                            <td>406-9292208-6725123</td>
+                                            <td>2021-06-17</td>
+                                            <td>9:12 pm IST</td>
+                                            <td>Thu</td>
+                                            <td>Subinita</td>
+                                            <td>howrah</td>
+                                            <td>west bengal</td>
+                                            <td>SKU:  HH-FOWV-5YWO</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>6</th>
+                                            <td>404-5794317-7737924</td>
+                                            <td>2021-08-12</td>
+                                            <td>8:03 pm IST</td>
+                                            <td>Thu</td>
+                                            <td>shailendra</td>
+                                            <td>orai</td>
+                                            <td>uttar pradesh</td>
+                                            <td>SKU:  TQ-OE6K-9DIK</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Returned to seller</td>
+                                          </tr>
+                                          <tr>
+                                            <th>7</th>
+                                            <td>405-8702211-4054722</td>
+                                            <td>2021-09-29</td>
+                                            <td>2:55 pm IST</td>
+                                            <td>Wed</td>
+                                            <td>Pratima</td>
+                                            <td>bareilly</td>
+                                            <td>uttar pradesh</td>
+                                            <td>SKU:  S1-A92Q-JU3X</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>8</th>
+                                            <td>171-1434812-8061163</td>
+                                            <td>2021-11-13</td>
+                                            <td>7:37 pm IST</td>
+                                            <td>Sat</td>
+                                            <td>Ipshita</td>
+                                            <td>bengaluru</td>
+                                            <td>karnataka</td>
+                                            <td>SKU:  3F-4R9N-Z8NJ</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>9</th>
+                                            <td>171-7954707-4463549</td>
+                                            <td>2021-08-09</td>
+                                            <td>4:47 pm IST</td>
+                                            <td>Mon</td>
+                                            <td>A.Jayaprada</td>
+                                            <td>bhilai</td>
+                                            <td>chhattisgarh</td>
+                                            <td>SKU:  NU-CKZ5-4O49</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>10</th>
+                                            <td>403-3146183-4920328</td>
+                                            <td>2021-09-04</td>
+                                            <td>11:53 am IST</td>
+                                            <td>Sat</td>
+                                            <td>Sumeet</td>
+                                            <td>faridabad</td>
+                                            <td>haryana</td>
+                                            <td>SKU:  2X-3C0F-KNJE</td>
+                                            <td>1</td>
+                                            <td>114.46</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>11</th>
+                                            <td>404-4406917-9569950</td>
+                                            <td>2021-11-16</td>
+                                            <td>7:43 am IST</td>
+                                            <td>Tue</td>
+                                            <td>Rolipar</td>
+                                            <td>agartala</td>
+                                            <td>tripura</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>1</td>
+                                            <td>60.18</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>12</th>
+                                            <td>402-5321389-8685152</td>
+                                            <td>2021-10-16</td>
+                                            <td>10:11 am IST</td>
+                                            <td>Sat</td>
+                                            <td>Blessan</td>
+                                            <td>coonoor</td>
+                                            <td>tamil nadu</td>
+                                            <td>SKU:  94-TSV3-EIW6</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>13</th>
+                                            <td>403-4385783-1379508</td>
+                                            <td>2021-10-04</td>
+                                            <td>10:05 am IST</td>
+                                            <td>Mon</td>
+                                            <td>Aditi</td>
+                                            <td>pune</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  FL-4CMG-CU48</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>14</th>
+                                            <td>408-9557300-6760347</td>
+                                            <td>2021-10-14</td>
+                                            <td>11:14 pm IST</td>
+                                            <td>Thu</td>
+                                            <td>Satish</td>
+                                            <td>mantha</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  YJ-5CCT-M3PP</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Returned to seller</td>
+                                          </tr>
+                                          <tr>
+                                            <th>15</th>
+                                            <td>402-4179660-9937142</td>
+                                            <td>2021-09-05</td>
+                                            <td>9:10 am IST</td>
+                                            <td>Sun</td>
+                                            <td>K</td>
+                                            <td>kolkata</td>
+                                            <td>west bengal</td>
+                                            <td>SKU:  KL-7WAA-Z82I</td>
+                                            <td>1</td>
+                                            <td>62.54</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>16</th>
+                                            <td>405-6918787-5602743</td>
+                                            <td>2021-08-25</td>
+                                            <td>7:48 am IST</td>
+                                            <td>Wed</td>
+                                            <td>Mosin</td>
+                                            <td>mahalingpur</td>
+                                            <td>karnataka</td>
+                                            <td>SKU:  TQ-OE6K-9DIK</td>
+                                            <td>1</td>
+                                            <td>81.42</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>17</th>
+                                            <td>406-1403658-9371527</td>
+                                            <td>2021-11-27</td>
+                                            <td>12:46 pm IST</td>
+                                            <td>Sat</td>
+                                            <td>shilpin</td>
+                                            <td>mumbai</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  PG-WS6J-89DG</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>18</th>
+                                            <td>407-2082022-4357107</td>
+                                            <td>2021-11-21</td>
+                                            <td>1:08 pm IST</td>
+                                            <td>Sun</td>
+                                            <td>prithi</td>
+                                            <td>hyderabad</td>
+                                            <td>telangana</td>
+                                            <td>SKU:  O9-OVS7-G9XK</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>19</th>
+                                            <td>402-8678022-3083562</td>
+                                            <td>2021-10-01</td>
+                                            <td>11:34 pm IST</td>
+                                            <td>Fri</td>
+                                            <td>Heena</td>
+                                            <td>mumbai</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  S1-A92Q-JU3X</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>20</th>
+                                            <td>402-1146202-1933154</td>
+                                            <td>2021-09-10</td>
+                                            <td>8:36 pm IST</td>
+                                            <td>Fri</td>
+                                            <td>Hemal</td>
+                                            <td>mumbai 400 026</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  AY-Z7BT-BMVM</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>21</th>
+                                            <td>402-6406639-0884351</td>
+                                            <td>2021-11-10</td>
+                                            <td>9:07 am IST</td>
+                                            <td>Wed</td>
+                                            <td>Neha</td>
+                                            <td>cuttack</td>
+                                            <td>odisha</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>1</td>
+                                            <td>60.18</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>22</th>
+                                            <td>171-6105173-4790734</td>
+                                            <td>2021-11-26</td>
+                                            <td>7:22 pm IST</td>
+                                            <td>Fri</td>
+                                            <td>Geetika</td>
+                                            <td>gurugram</td>
+                                            <td>haryana</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Returned to seller</td>
+                                          </tr>
+                                          <tr>
+                                            <th>23</th>
+                                            <td>406-9975868-3000368</td>
+                                            <td>2021-10-20</td>
+                                            <td>10:15 pm IST</td>
+                                            <td>Wed</td>
+                                            <td>Hema</td>
+                                            <td>bengaluru</td>
+                                            <td>karnataka</td>
+                                            <td>SKU:  AY-Z7BT-BMVM</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>24</th>
+                                            <td>403-7876698-8356365</td>
+                                            <td>2021-06-25</td>
+                                            <td>7:48 am IST</td>
+                                            <td>Fri</td>
+                                            <td>Yash</td>
+                                            <td>mumbai</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  3O-GBSM-TYZE</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Returned to seller</td>
+                                          </tr>
+                                          <tr>
+                                            <th>25</th>
+                                            <td>402-2054361-4513137</td>
+                                            <td>2021-09-06</td>
+                                            <td>12:46 pm IST</td>
+                                            <td>Mon</td>
+                                            <td>Ramesh</td>
+                                            <td>jaleswar</td>
+                                            <td>odisha</td>
+                                            <td>SKU:  TQ-OE6K-9DIK</td>
+                                            <td>1</td>
+                                            <td>60.18</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>26</th>
+                                            <td>405-0695973-7365161</td>
+                                            <td>2021-07-22</td>
+                                            <td>9:32 am IST</td>
+                                            <td>Thu</td>
+                                            <td>Sailaja</td>
+                                            <td>visakhapatnam</td>
+                                            <td>andhra pradesh</td>
+                                            <td>SKU:  AH-J3AO-R7DN</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>27</th>
+                                            <td>404-9680499-3084319</td>
+                                            <td>2021-10-29</td>
+                                            <td>6:58 am IST</td>
+                                            <td>Fri</td>
+                                            <td>Manisha</td>
+                                            <td>punepune</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>28</th>
+                                            <td>406-3518585-4093925</td>
+                                            <td>2021-09-20</td>
+                                            <td>6:41 pm IST</td>
+                                            <td>Mon</td>
+                                            <td>m</td>
+                                            <td>new delhi</td>
+                                            <td>delhi</td>
+                                            <td>SKU:  0M-RFE6-443C</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>29</th>
+                                            <td>404-6883107-8347508</td>
+                                            <td>2021-08-04</td>
+                                            <td>8:16 pm IST</td>
+                                            <td>Wed</td>
+                                            <td>chirag</td>
+                                            <td>raia</td>
+                                            <td>goa</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>30</th>
+                                            <td>404-8244254-9274747</td>
+                                            <td>2021-10-11</td>
+                                            <td>9:30 am IST</td>
+                                            <td>Mon</td>
+                                            <td>Subhendu</td>
+                                            <td>bhubaneswar</td>
+                                            <td>odisha</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>1</td>
+                                            <td>60.18</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>31</th>
+                                            <td>407-2330390-9441923</td>
+                                            <td>2021-10-16</td>
+                                            <td>9:51 am IST</td>
+                                            <td>Sat</td>
+                                            <td>Harsimranjit</td>
+                                            <td>jagdalpur</td>
+                                            <td>chhattisgarh</td>
+                                            <td>SKU:  TY-4GPW-U54J</td>
+                                            <td>1</td>
+                                            <td>60.18</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>32</th>
+                                            <td>407-0864859-8033111</td>
+                                            <td>2021-10-29</td>
+                                            <td>2:19 pm IST</td>
+                                            <td>Fri</td>
+                                            <td>Deepshikha</td>
+                                            <td>hyderabad</td>
+                                            <td>telangana</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>33</th>
+                                            <td>402-0249599-9225933</td>
+                                            <td>2021-09-18</td>
+                                            <td>8:06 am IST</td>
+                                            <td>Sat</td>
+                                            <td>Elizabeth</td>
+                                            <td>bengaluru</td>
+                                            <td>karnataka</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>34</th>
+                                            <td>403-0713090-0169940</td>
+                                            <td>2021-10-28</td>
+                                            <td>3:54 pm IST</td>
+                                            <td>Thu</td>
+                                            <td>sayani</td>
+                                            <td>kolkata</td>
+                                            <td>west bengal</td>
+                                            <td>SKU:  9S-GE8P-RIR4</td>
+                                            <td>1</td>
+                                            <td>47.20</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>35</th>
+                                            <td>403-7215480-9090745</td>
+                                            <td>2021-09-07</td>
+                                            <td>7:11 am IST</td>
+                                            <td>Tue</td>
+                                            <td>Madan</td>
+                                            <td>bengaluru</td>
+                                            <td>karnataka</td>
+                                            <td>SKU:  3F-4R9N-Z8NJ</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>36</th>
+                                            <td>403-7217325-7956317</td>
+                                            <td>2021-09-02</td>
+                                            <td>2:35 pm IST</td>
+                                            <td>Thu</td>
+                                            <td>maha</td>
+                                            <td>salem</td>
+                                            <td>tamil nadu</td>
+                                            <td>SKU:  0M-RFE6-443C</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>37</th>
+                                            <td>405-8876256-0913907</td>
+                                            <td>2021-09-18</td>
+                                            <td>5:03 pm IST</td>
+                                            <td>Sat</td>
+                                            <td>Shreyasi</td>
+                                            <td>pune</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  CR-6E69-UXFW</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>38</th>
+                                            <td>407-0539421-4069143</td>
+                                            <td>2021-11-01</td>
+                                            <td>11:33 am IST</td>
+                                            <td>Mon</td>
+                                            <td>Parmeet</td>
+                                            <td>jammu</td>
+                                            <td>jammu &amp; kashmir</td>
+                                            <td>SKU:  0M-RFE6-443C</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>39</th>
+                                            <td>404-8031085-1381943</td>
+                                            <td>2021-11-26</td>
+                                            <td>9:12 pm IST</td>
+                                            <td>Fri</td>
+                                            <td>Kangana</td>
+                                            <td>new delhi</td>
+                                            <td>delhi</td>
+                                            <td>SKU:  54-D265-B74K</td>
+                                            <td>4</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Returned to seller</td>
+                                          </tr>
+                                          <tr>
+                                            <th>40</th>
+                                            <td>407-6856738-1928342</td>
+                                            <td>2021-09-06</td>
+                                            <td>3:15 pm IST</td>
+                                            <td>Mon</td>
+                                            <td>Nina</td>
+                                            <td>hyderabad</td>
+                                            <td>telangana</td>
+                                            <td>SKU:  D4-UD68-TMXH</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>41</th>
+                                            <td>405-4776641-5401922</td>
+                                            <td>2021-10-01</td>
+                                            <td>2:18 pm IST</td>
+                                            <td>Fri</td>
+                                            <td>Rathish</td>
+                                            <td>ahmedabad</td>
+                                            <td>gujarat</td>
+                                            <td>SKU:  9S-GE8P-RIR4</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>42</th>
+                                            <td>407-7181943-1725128</td>
+                                            <td>2021-10-04</td>
+                                            <td>1:10 am IST</td>
+                                            <td>Mon</td>
+                                            <td>Rohan</td>
+                                            <td>gurugram</td>
+                                            <td>haryana</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>43</th>
+                                            <td>405-8481932-1229966</td>
+                                            <td>2021-10-31</td>
+                                            <td>11:38 am IST</td>
+                                            <td>Sun</td>
+                                            <td>Amala</td>
+                                            <td>kolkata</td>
+                                            <td>west bengal</td>
+                                            <td>SKU:  S1-A92Q-JU3X</td>
+                                            <td>1</td>
+                                            <td>47.20</td>
+                                            <td>No</td>
+                                            <td>Returned to seller</td>
+                                          </tr>
+                                          <tr>
+                                            <th>44</th>
+                                            <td>404-9914447-5578722</td>
+                                            <td>2021-08-06</td>
+                                            <td>9:16 am IST</td>
+                                            <td>Fri</td>
+                                            <td>Dipali</td>
+                                            <td>mumbai</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>45</th>
+                                            <td>404-6735919-2773947</td>
+                                            <td>2021-10-31</td>
+                                            <td>11:28 pm IST</td>
+                                            <td>Sun</td>
+                                            <td>swagata13051978</td>
+                                            <td>silchar</td>
+                                            <td>assam</td>
+                                            <td>SKU:  9S-GE8P-RIR4</td>
+                                            <td>1</td>
+                                            <td>60.18</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>46</th>
+                                            <td>407-1526604-7803547</td>
+                                            <td>2021-08-13</td>
+                                            <td>12:02 pm IST</td>
+                                            <td>Fri</td>
+                                            <td>Jolly</td>
+                                            <td>guwahati</td>
+                                            <td>assam</td>
+                                            <td>SKU:  KL-7WAA-Z82I</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>47</th>
+                                            <td>405-1981073-5970737</td>
+                                            <td>2021-10-05</td>
+                                            <td>8:53 pm IST</td>
+                                            <td>Tue</td>
+                                            <td>Jitu</td>
+                                            <td>guwahati</td>
+                                            <td>assam</td>
+                                            <td>SKU:  I1-AWVT-2QOL</td>
+                                            <td>1</td>
+                                            <td>60.18</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Returned to seller</td>
+                                          </tr>
+                                          <tr>
+                                            <th>48</th>
+                                            <td>171-5705929-2195543</td>
+                                            <td>2021-08-16</td>
+                                            <td>9:27 pm IST</td>
+                                            <td>Mon</td>
+                                            <td>John</td>
+                                            <td>ernakulam</td>
+                                            <td>kerala</td>
+                                            <td>SKU:  NU-CKZ5-4O49</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>49</th>
+                                            <td>405-1111150-1834754</td>
+                                            <td>2021-09-05</td>
+                                            <td>12:22 am IST</td>
+                                            <td>Sun</td>
+                                            <td>Jai</td>
+                                            <td>hyderabad</td>
+                                            <td>telangana</td>
+                                            <td>SKU:  TQ-OE6K-9DIK</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>50</th>
+                                            <td>403-1631300-1893901</td>
+                                            <td>2021-11-13</td>
+                                            <td>4:47 pm IST</td>
+                                            <td>Sat</td>
+                                            <td>saravanan</td>
+                                            <td>karaikkudi</td>
+                                            <td>tamil nadu</td>
+                                            <td>SKU:  WR-ANCX-U28C</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>51</th>
+                                            <td>402-5621007-4266725</td>
+                                            <td>2021-08-24</td>
+                                            <td>5:18 pm IST</td>
+                                            <td>Tue</td>
+                                            <td>Tarek</td>
+                                            <td>mumbai</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  W4-JQ2J-ZUF2</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>52</th>
+                                            <td>404-7918321-6528342</td>
+                                            <td>2021-06-16</td>
+                                            <td>8:53 pm IST</td>
+                                            <td>Wed</td>
+                                            <td>narendra</td>
+                                            <td>kodad</td>
+                                            <td>telangana</td>
+                                            <td>SKU:  5B-NW9K-L3AO</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>53</th>
+                                            <td>406-5723826-0192341</td>
+                                            <td>2021-10-22</td>
+                                            <td>2:57 pm IST</td>
+                                            <td>Fri</td>
+                                            <td>Sailee</td>
+                                            <td>mumbai</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>54</th>
+                                            <td>406-5208445-6151521</td>
+                                            <td>2021-10-26</td>
+                                            <td>9:59 am IST</td>
+                                            <td>Tue</td>
+                                            <td>Saravana</td>
+                                            <td>kolkata</td>
+                                            <td>west bengal</td>
+                                            <td>SKU:  86-JXO3-EJ7K</td>
+                                            <td>1</td>
+                                            <td>47.20</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>55</th>
+                                            <td>404-5515061-6165137</td>
+                                            <td>2021-10-15</td>
+                                            <td>8:27 pm IST</td>
+                                            <td>Fri</td>
+                                            <td>Arpita</td>
+                                            <td>kolkata</td>
+                                            <td>west bengal</td>
+                                            <td>SKU:  0M-RFE6-443C</td>
+                                            <td>1</td>
+                                            <td>47.20</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>56</th>
+                                            <td>406-4504814-5756357</td>
+                                            <td>2021-06-16</td>
+                                            <td>10:35 pm IST</td>
+                                            <td>Wed</td>
+                                            <td>Shamal</td>
+                                            <td>badlapur</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  3O-GBSM-TYZE</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>57</th>
+                                            <td>403-7364233-8411519</td>
+                                            <td>2021-11-04</td>
+                                            <td>7:38 am IST</td>
+                                            <td>Thu</td>
+                                            <td>Salima</td>
+                                            <td>mumbai</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  0M-RFE6-443C</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>58</th>
+                                            <td>402-0413922-0000337</td>
+                                            <td>2021-11-11</td>
+                                            <td>6:16 am IST</td>
+                                            <td>Thu</td>
+                                            <td>Hemant</td>
+                                            <td>surat</td>
+                                            <td>gujarat</td>
+                                            <td>SKU:  SB-WDQN-SDN9</td>
+                                            <td>1</td>
+                                            <td>178.18</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>59</th>
+                                            <td>171-1070115-6195560</td>
+                                            <td>2021-06-16</td>
+                                            <td>4:27 pm IST</td>
+                                            <td>Wed</td>
+                                            <td>soumya</td>
+                                            <td>thane</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  3O-GBSM-TYZE</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>60</th>
+                                            <td>407-5532335-4314768</td>
+                                            <td>2021-06-13</td>
+                                            <td>7:08 pm IST</td>
+                                            <td>Sun</td>
+                                            <td>Pavithra</td>
+                                            <td>pollachi</td>
+                                            <td>tamil nadu</td>
+                                            <td>SKU:  QV-PHXY-LGY8</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>61</th>
+                                            <td>402-6806027-8773139</td>
+                                            <td>2021-11-29</td>
+                                            <td>10:34 am IST</td>
+                                            <td>Mon</td>
+                                            <td>Rana</td>
+                                            <td>pune</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  0M-RFE6-443C</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>62</th>
+                                            <td>407-5896934-9005133</td>
+                                            <td>2021-10-26</td>
+                                            <td>10:32 am IST</td>
+                                            <td>Tue</td>
+                                            <td>Sumita</td>
+                                            <td>mumbai</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  H6-A9OJ-C0Q1</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>63</th>
+                                            <td>403-3892336-2999521</td>
+                                            <td>2021-06-28</td>
+                                            <td>5:15 pm IST</td>
+                                            <td>Mon</td>
+                                            <td>Ajay</td>
+                                            <td>raipur</td>
+                                            <td>chhattisgarh</td>
+                                            <td>SKU:  3O-GBSM-TYZE</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>64</th>
+                                            <td>406-9458224-2717157</td>
+                                            <td>2021-11-09</td>
+                                            <td>11:23 pm IST</td>
+                                            <td>Tue</td>
+                                            <td>Pooja</td>
+                                            <td>gurugram</td>
+                                            <td>haryana</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>65</th>
+                                            <td>408-4317100-7692318</td>
+                                            <td>2021-11-07</td>
+                                            <td>6:58 pm IST</td>
+                                            <td>Sun</td>
+                                            <td>Priyanka</td>
+                                            <td>bareilly</td>
+                                            <td>uttar pradesh</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>66</th>
+                                            <td>402-6701060-6592325</td>
+                                            <td>2021-10-01</td>
+                                            <td>11:35 pm IST</td>
+                                            <td>Fri</td>
+                                            <td>Heena</td>
+                                            <td>mumbai</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  1T-RAUZ-UZKO</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>67</th>
+                                            <td>405-0978927-9443544</td>
+                                            <td>2021-11-10</td>
+                                            <td>9:24 pm IST</td>
+                                            <td>Wed</td>
+                                            <td>A</td>
+                                            <td>jalandhar</td>
+                                            <td>punjab</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>68</th>
+                                            <td>407-4805322-7498725</td>
+                                            <td>2021-06-23</td>
+                                            <td>6:09 am IST</td>
+                                            <td>Wed</td>
+                                            <td>Velmurugan</td>
+                                            <td>thisayanvilai</td>
+                                            <td>tamil nadu</td>
+                                            <td>SKU:  CR-6E69-UXFW</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>69</th>
+                                            <td>406-6432664-4853932</td>
+                                            <td>2021-09-19</td>
+                                            <td>11:57 am IST</td>
+                                            <td>Sun</td>
+                                            <td>Nilanjana</td>
+                                            <td>bidhan nagar</td>
+                                            <td>west bengal</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>1</td>
+                                            <td>47.20</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>70</th>
+                                            <td>407-8790284-0125124</td>
+                                            <td>2021-10-10</td>
+                                            <td>11:02 pm IST</td>
+                                            <td>Sun</td>
+                                            <td>Harsimranjit</td>
+                                            <td>jagdalpur</td>
+                                            <td>chhattisgarh</td>
+                                            <td>SKU:  0M-RFE6-443C</td>
+                                            <td>1</td>
+                                            <td>60.18</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>71</th>
+                                            <td>402-4834476-0320360</td>
+                                            <td>2021-08-16</td>
+                                            <td>1:37 pm IST</td>
+                                            <td>Mon</td>
+                                            <td>Abhishek</td>
+                                            <td>kolkata</td>
+                                            <td>west bengal</td>
+                                            <td>SKU:  UR-WJJ0-I3TN</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>72</th>
+                                            <td>171-2479820-8391565</td>
+                                            <td>2021-07-29</td>
+                                            <td>6:04 pm IST</td>
+                                            <td>Thu</td>
+                                            <td>Rajat</td>
+                                            <td>new delhi</td>
+                                            <td>delhi</td>
+                                            <td>SKU:  RG-29TH-MROF</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>73</th>
+                                            <td>408-0358198-6688308</td>
+                                            <td>2021-07-21</td>
+                                            <td>7:40 pm IST</td>
+                                            <td>Wed</td>
+                                            <td>S.</td>
+                                            <td>tuticorin</td>
+                                            <td>tamil nadu</td>
+                                            <td>SKU:  GP-RMI4-GJ6L</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>74</th>
+                                            <td>171-2095880-5548309</td>
+                                            <td>2021-11-12</td>
+                                            <td>7:10 pm IST</td>
+                                            <td>Fri</td>
+                                            <td>Kusum</td>
+                                            <td>jaipur</td>
+                                            <td>rajasthan</td>
+                                            <td>SKU:  SB-WDQN-SDN9</td>
+                                            <td>1</td>
+                                            <td>210.04</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>75</th>
+                                            <td>403-3087278-4501963</td>
+                                            <td>2021-11-27</td>
+                                            <td>9:28 pm IST</td>
+                                            <td>Sat</td>
+                                            <td>Vinithra</td>
+                                            <td>chennai</td>
+                                            <td>tamil nadu</td>
+                                            <td>SKU:  U1-8YOK-510E</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>76</th>
+                                            <td>406-6774677-4553965</td>
+                                            <td>2021-07-13</td>
+                                            <td>12:04 pm IST</td>
+                                            <td>Tue</td>
+                                            <td>Priyanka</td>
+                                            <td>hyderabad</td>
+                                            <td>telangana</td>
+                                            <td>SKU:  5B-NW9K-L3AO</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>77</th>
+                                            <td>402-6614720-2475547</td>
+                                            <td>2021-09-19</td>
+                                            <td>7:52 pm IST</td>
+                                            <td>Sun</td>
+                                            <td>Anjana</td>
+                                            <td>palai</td>
+                                            <td>kerala</td>
+                                            <td>SKU:  9S-GE8P-RIR4</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>78</th>
+                                            <td>405-4735668-0393136</td>
+                                            <td>2021-09-23</td>
+                                            <td>3:19 pm IST</td>
+                                            <td>Thu</td>
+                                            <td>Noopur</td>
+                                            <td>korba</td>
+                                            <td>chhattisgarh</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>1</td>
+                                            <td>60.18</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>79</th>
+                                            <td>408-7282076-9330761</td>
+                                            <td>2021-10-24</td>
+                                            <td>6:56 pm IST</td>
+                                            <td>Sun</td>
+                                            <td>Deepak</td>
+                                            <td>bengaluru</td>
+                                            <td>karnataka</td>
+                                            <td>SKU:  D9-CVL3-8JF6</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>80</th>
+                                            <td>403-9782961-0644358</td>
+                                            <td>2021-11-10</td>
+                                            <td>6:00 pm IST</td>
+                                            <td>Wed</td>
+                                            <td>Madhavi</td>
+                                            <td>hyderabad</td>
+                                            <td>telangana</td>
+                                            <td>SKU:  54-D265-B74K</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>81</th>
+                                            <td>402-3054284-1226754</td>
+                                            <td>2021-11-18</td>
+                                            <td>12:32 am IST</td>
+                                            <td>Thu</td>
+                                            <td>Sayantani</td>
+                                            <td>kolkata</td>
+                                            <td>west bengal</td>
+                                            <td>SKU:  G4-B5GQ-8V30</td>
+                                            <td>1</td>
+                                            <td>47.20</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>82</th>
+                                            <td>403-4722970-7103536</td>
+                                            <td>2021-11-04</td>
+                                            <td>8:52 am IST</td>
+                                            <td>Thu</td>
+                                            <td>Salima</td>
+                                            <td>mumbai</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  TY-4GPW-U54J</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>83</th>
+                                            <td>407-8029342-1162714</td>
+                                            <td>2021-09-01</td>
+                                            <td>11:32 am IST</td>
+                                            <td>Wed</td>
+                                            <td>Sharad</td>
+                                            <td>bengaluru</td>
+                                            <td>karnataka</td>
+                                            <td>SKU:  NV-1DWM-41VX</td>
+                                            <td>1</td>
+                                            <td>114.46</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>84</th>
+                                            <td>406-9976360-8935534</td>
+                                            <td>2021-11-20</td>
+                                            <td>2:41 am IST</td>
+                                            <td>Sat</td>
+                                            <td>shilpin</td>
+                                            <td>mumbai</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  PG-WS6J-89DG</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>85</th>
+                                            <td>406-0702616-4123501</td>
+                                            <td>2021-08-29</td>
+                                            <td>11:28 pm IST</td>
+                                            <td>Sun</td>
+                                            <td>Mahalakshmi</td>
+                                            <td>chennai</td>
+                                            <td>tamil nadu</td>
+                                            <td>SKU:  9W-AS6W-6O9X</td>
+                                            <td>1</td>
+                                            <td>81.42</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>86</th>
+                                            <td>408-6770537-3774707</td>
+                                            <td>2021-10-17</td>
+                                            <td>10:22 am IST</td>
+                                            <td>Sun</td>
+                                            <td>Paromita</td>
+                                            <td>mumbai</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>2</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>87</th>
+                                            <td>403-4274611-4049927</td>
+                                            <td>2021-10-07</td>
+                                            <td>11:23 am IST</td>
+                                            <td>Thu</td>
+                                            <td>Pooja</td>
+                                            <td>saharanpur</td>
+                                            <td>uttar pradesh</td>
+                                            <td>SKU:  UR-WJJ0-I3TN</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>88</th>
+                                            <td>407-7598159-3965161</td>
+                                            <td>2021-11-15</td>
+                                            <td>12:29 pm IST</td>
+                                            <td>Mon</td>
+                                            <td>chandni</td>
+                                            <td>thamarassery</td>
+                                            <td>kerala</td>
+                                            <td>SKU:  S1-A92Q-JU3X</td>
+                                            <td>1</td>
+                                            <td>210.04</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>89</th>
+                                            <td>403-0124463-2966723</td>
+                                            <td>2021-07-26</td>
+                                            <td>8:15 am IST</td>
+                                            <td>Mon</td>
+                                            <td>Thanigaivel</td>
+                                            <td>chennai</td>
+                                            <td>tamil nadu</td>
+                                            <td>SKU:  QD-RNE2-2FH8</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>90</th>
+                                            <td>403-5745034-5441137</td>
+                                            <td>2021-08-20</td>
+                                            <td>11:07 pm IST</td>
+                                            <td>Fri</td>
+                                            <td>parul</td>
+                                            <td>surat</td>
+                                            <td>gujarat</td>
+                                            <td>SKU:  3V-FKXN-C4QJ</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>91</th>
+                                            <td>404-1364960-1146735</td>
+                                            <td>2021-11-25</td>
+                                            <td>10:09 pm IST</td>
+                                            <td>Thu</td>
+                                            <td>swati</td>
+                                            <td>gurugram</td>
+                                            <td>haryana</td>
+                                            <td>SKU:  0M-RFE6-443C</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>92</th>
+                                            <td>171-5917046-2682765</td>
+                                            <td>2021-10-07</td>
+                                            <td>10:04 am IST</td>
+                                            <td>Thu</td>
+                                            <td>Anku</td>
+                                            <td>guwahati</td>
+                                            <td>assam</td>
+                                            <td>SKU:  TQ-OE6K-9DIK</td>
+                                            <td>1</td>
+                                            <td>60.18</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>93</th>
+                                            <td>408-9069501-2731541</td>
+                                            <td>2021-08-18</td>
+                                            <td>11:10 am IST</td>
+                                            <td>Wed</td>
+                                            <td>shweta</td>
+                                            <td>mumbai</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  O9-OVS7-G9XK</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>94</th>
+                                            <td>403-3308024-9965128</td>
+                                            <td>2021-11-16</td>
+                                            <td>9:04 am IST</td>
+                                            <td>Tue</td>
+                                            <td>Madhavi</td>
+                                            <td>hyderabad</td>
+                                            <td>telangana</td>
+                                            <td>SKU:  G4-B5GQ-8V30</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>95</th>
+                                            <td>405-7861224-4380325</td>
+                                            <td>2021-11-13</td>
+                                            <td>12:48 pm IST</td>
+                                            <td>Sat</td>
+                                            <td>Gaurang</td>
+                                            <td>ahmedabad</td>
+                                            <td>gujarat</td>
+                                            <td>SKU:  2X-3C0F-KNJE</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>96</th>
+                                            <td>406-9977841-6948310</td>
+                                            <td>2021-09-16</td>
+                                            <td>6:59 am IST</td>
+                                            <td>Thu</td>
+                                            <td>Pramod</td>
+                                            <td>gautam buddha nagar</td>
+                                            <td>uttar pradesh</td>
+                                            <td>SKU:  0M-RFE6-443C</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>97</th>
+                                            <td>171-6267238-3345112</td>
+                                            <td>2021-11-18</td>
+                                            <td>9:55 pm IST</td>
+                                            <td>Thu</td>
+                                            <td>Geetika</td>
+                                            <td>gurugram</td>
+                                            <td>haryana</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>3</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>98</th>
+                                            <td>405-3304794-2671568</td>
+                                            <td>2021-10-09</td>
+                                            <td>8:46 pm IST</td>
+                                            <td>Sat</td>
+                                            <td>Shobhit</td>
+                                            <td>new delhi</td>
+                                            <td>delhi</td>
+                                            <td>SKU:  D9-CVL3-8JF6</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>99</th>
+                                            <td>404-3621013-4015566</td>
+                                            <td>2021-08-08</td>
+                                            <td>7:08 am IST</td>
+                                            <td>Sun</td>
+                                            <td>roohi</td>
+                                            <td>bengaluru</td>
+                                            <td>karnataka</td>
+                                            <td>SKU:  54-D265-B74K</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>100</th>
+                                            <td>407-9473791-2643568</td>
+                                            <td>2022-02-25</td>
+                                            <td>12:04 am IST</td>
+                                            <td>Fri</td>
+                                            <td>chandrima</td>
+                                            <td>katwa</td>
+                                            <td>west bengal</td>
+                                            <td>SKU:  P1-LF2X-L3ZC</td>
+                                            <td>1</td>
+                                            <td>60.18</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>101</th>
+                                            <td>171-5463316-4433940</td>
+                                            <td>2022-01-27</td>
+                                            <td>5:31 pm IST</td>
+                                            <td>Thu</td>
+                                            <td>Vadim</td>
+                                            <td>new delhi</td>
+                                            <td>delhi</td>
+                                            <td>SKU:  GP-RMI4-GJ6L</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>102</th>
+                                            <td>406-8570816-2548324</td>
+                                            <td>2022-01-30</td>
+                                            <td>10:25 am IST</td>
+                                            <td>Sun</td>
+                                            <td>pallavi</td>
+                                            <td>mumbai</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  UR-WJJ0-I3TN</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>103</th>
+                                            <td>171-1925470-1621156</td>
+                                            <td>2022-01-25</td>
+                                            <td>11:42 am IST</td>
+                                            <td>Tue</td>
+                                            <td>Deepali</td>
+                                            <td>jodhpur</td>
+                                            <td>rajasthan</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>104</th>
+                                            <td>404-9528809-9494717</td>
+                                            <td>2022-01-03</td>
+                                            <td>9:43 pm IST</td>
+                                            <td>Mon</td>
+                                            <td>Dr.</td>
+                                            <td>malda</td>
+                                            <td>west bengal</td>
+                                            <td>SKU:  TQ-OE6K-9DIK</td>
+                                            <td>1</td>
+                                            <td>60.18</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>105</th>
+                                            <td>404-3361026-0027538</td>
+                                            <td>2021-11-29</td>
+                                            <td>6:09 pm IST</td>
+                                            <td>Mon</td>
+                                            <td>Sayanti</td>
+                                            <td>noida</td>
+                                            <td>uttar pradesh</td>
+                                            <td>SKU:  7K-6YIU-KO0R</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>106</th>
+                                            <td>408-1794879-4342714</td>
+                                            <td>2021-12-23</td>
+                                            <td>12:02 pm IST</td>
+                                            <td>Thu</td>
+                                            <td>Apoorva</td>
+                                            <td>bengaluru</td>
+                                            <td>karnataka</td>
+                                            <td>SKU:  PG-WS6J-89DG</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>107</th>
+                                            <td>403-2108547-9065907</td>
+                                            <td>2022-02-10</td>
+                                            <td>11:22 pm IST</td>
+                                            <td>Thu</td>
+                                            <td>RishuGarg</td>
+                                            <td>chandigarh</td>
+                                            <td>chandigarh,</td>
+                                            <td>SKU:  54-D265-B74K</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>108</th>
+                                            <td>405-0789055-6741110</td>
+                                            <td>2022-02-25</td>
+                                            <td>8:44 pm IST</td>
+                                            <td>Fri</td>
+                                            <td>Harshini</td>
+                                            <td>secunderabad</td>
+                                            <td>telangana</td>
+                                            <td>SKU:  W4-JQ2J-ZUF2</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>109</th>
+                                            <td>171-4664401-7903525</td>
+                                            <td>2021-12-26</td>
+                                            <td>6:00 am IST</td>
+                                            <td>Sun</td>
+                                            <td>Madhuparna</td>
+                                            <td>kolkata</td>
+                                            <td>west bengal</td>
+                                            <td>SKU:  NT-6I2C-2TWX</td>
+                                            <td>1</td>
+                                            <td>80.24</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>110</th>
+                                            <td>406-1051099-3807565</td>
+                                            <td>2022-01-19</td>
+                                            <td>7:13 pm IST</td>
+                                            <td>Wed</td>
+                                            <td>Shakti</td>
+                                            <td>chandigarh</td>
+                                            <td>chandigarh</td>
+                                            <td>SKU:  2X-3C0F-KNJE</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>111</th>
+                                            <td>408-9435263-6891514</td>
+                                            <td>2021-12-09</td>
+                                            <td>3:48 pm IST</td>
+                                            <td>Thu</td>
+                                            <td>Sharmila</td>
+                                            <td>noida</td>
+                                            <td>uttar pradesh</td>
+                                            <td>SKU:  SB-WDQN-SDN9</td>
+                                            <td>1</td>
+                                            <td>146.32</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>112</th>
+                                            <td>405-0868310-6684357</td>
+                                            <td>2021-12-17</td>
+                                            <td>3:57 pm IST</td>
+                                            <td>Fri</td>
+                                            <td>Monali</td>
+                                            <td>siwan</td>
+                                            <td>bihar</td>
+                                            <td>SKU:  X2-PMD5-PL2D</td>
+                                            <td>1</td>
+                                            <td>60.18</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>113</th>
+                                            <td>407-2925312-1225952</td>
+                                            <td>2021-12-08</td>
+                                            <td>9:22 pm IST</td>
+                                            <td>Wed</td>
+                                            <td>anjali</td>
+                                            <td>gurugram</td>
+                                            <td>haryana</td>
+                                            <td>SKU:  54-D265-B74K</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>114</th>
+                                            <td>405-0209265-6273962</td>
+                                            <td>2022-01-23</td>
+                                            <td>9:37 am IST</td>
+                                            <td>Sun</td>
+                                            <td>Gargi</td>
+                                            <td>ernakulam</td>
+                                            <td>kerala</td>
+                                            <td>SKU:  V6-KQJX-XGP2</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Returned to seller</td>
+                                          </tr>
+                                          <tr>
+                                            <th>115</th>
+                                            <td>403-0102354-2668323</td>
+                                            <td>2022-01-30</td>
+                                            <td>2:42 am IST</td>
+                                            <td>Sun</td>
+                                            <td>Jeevan</td>
+                                            <td>hyderabad</td>
+                                            <td>telangana</td>
+                                            <td>SKU:  2X-3C0F-KNJE</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>116</th>
+                                            <td>407-3924859-8788324</td>
+                                            <td>2021-12-06</td>
+                                            <td>4:22 pm IST</td>
+                                            <td>Mon</td>
+                                            <td>kritika</td>
+                                            <td>navi mumbai</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  SB-WDQN-SDN9</td>
+                                            <td>1</td>
+                                            <td>114.46</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>117</th>
+                                            <td>402-6563725-6606725</td>
+                                            <td>2021-12-21</td>
+                                            <td>4:11 pm IST</td>
+                                            <td>Tue</td>
+                                            <td>Mitra</td>
+                                            <td>kolkata</td>
+                                            <td>west bengal</td>
+                                            <td>SKU:  SB-WDQN-SDN9</td>
+                                            <td>3</td>
+                                            <td>133.34</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>118</th>
+                                            <td>408-3173592-1224340</td>
+                                            <td>2021-12-09</td>
+                                            <td>1:22 pm IST</td>
+                                            <td>Thu</td>
+                                            <td>Dipali</td>
+                                            <td>mumbai</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>119</th>
+                                            <td>406-6970801-9059504</td>
+                                            <td>2021-12-01</td>
+                                            <td>7:12 pm IST</td>
+                                            <td>Wed</td>
+                                            <td>Rebecca</td>
+                                            <td>bardez</td>
+                                            <td>goa</td>
+                                            <td>SKU:  CR-6E69-UXFW</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>120</th>
+                                            <td>407-7313002-2067527</td>
+                                            <td>2022-02-04</td>
+                                            <td>11:44 pm IST</td>
+                                            <td>Fri</td>
+                                            <td>pavithra</td>
+                                            <td>chennai</td>
+                                            <td>tamil nadu</td>
+                                            <td>SKU:  4H-Y62P-R483</td>
+                                            <td>1</td>
+                                            <td>114.46</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>121</th>
+                                            <td>402-9977250-1302757</td>
+                                            <td>2021-12-21</td>
+                                            <td>4:15 pm IST</td>
+                                            <td>Tue</td>
+                                            <td>Mitra</td>
+                                            <td>chennai</td>
+                                            <td>tamil nadu</td>
+                                            <td>SKU:  SB-WDQN-SDN9</td>
+                                            <td>3</td>
+                                            <td>241.90</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>122</th>
+                                            <td>404-7450458-9882702</td>
+                                            <td>2021-12-06</td>
+                                            <td>11:29 pm IST</td>
+                                            <td>Mon</td>
+                                            <td>Arpita</td>
+                                            <td>thane district</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  4V-I7XD-JQVR</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>123</th>
+                                            <td>402-4007700-9289906</td>
+                                            <td>2021-12-13</td>
+                                            <td>1:03 pm IST</td>
+                                            <td>Mon</td>
+                                            <td>Valli</td>
+                                            <td>hyderabad</td>
+                                            <td>telangana</td>
+                                            <td>SKU:  8V-OQ14-I63T</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>124</th>
+                                            <td>408-9442756-9477100</td>
+                                            <td>2022-02-02</td>
+                                            <td>11:58 am IST</td>
+                                            <td>Wed</td>
+                                            <td>amit</td>
+                                            <td>indore</td>
+                                            <td>madhya pradesh</td>
+                                            <td>SKU:  CR-6E69-UXFW</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>125</th>
+                                            <td>403-7552858-2817166</td>
+                                            <td>2021-12-04</td>
+                                            <td>2:28 pm IST</td>
+                                            <td>Sat</td>
+                                            <td>Anastasiia</td>
+                                            <td>visakhapatnam</td>
+                                            <td>andhra pradesh</td>
+                                            <td>SKU:  W4-JQ2J-ZUF2</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>126</th>
+                                            <td>404-9326436-3517161</td>
+                                            <td>2021-12-29</td>
+                                            <td>1:03 pm IST</td>
+                                            <td>Wed</td>
+                                            <td>Santhosh</td>
+                                            <td>bengaluru</td>
+                                            <td>karnataka</td>
+                                            <td>SKU:  4V-I7XD-JQVR</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>127</th>
+                                            <td>405-8264291-1183552</td>
+                                            <td>2022-01-11</td>
+                                            <td>1:46 pm IST</td>
+                                            <td>Tue</td>
+                                            <td>Aditi</td>
+                                            <td>new delhi</td>
+                                            <td>delhi</td>
+                                            <td>SKU:  94-TSV3-EIW6</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>128</th>
+                                            <td>403-9089686-7304307</td>
+                                            <td>2021-12-06</td>
+                                            <td>10:25 pm IST</td>
+                                            <td>Mon</td>
+                                            <td>J</td>
+                                            <td>bengaluru</td>
+                                            <td>karnataka</td>
+                                            <td>SKU:  ST-27BR-VEMQ</td>
+                                            <td>1</td>
+                                            <td>114.46</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>129</th>
+                                            <td>403-3882329-3552343</td>
+                                            <td>2022-01-20</td>
+                                            <td>11:49 am IST</td>
+                                            <td>Thu</td>
+                                            <td>maha</td>
+                                            <td>salem</td>
+                                            <td>tamil nadu</td>
+                                            <td>SKU:  3F-4R9N-Z8NJ</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>130</th>
+                                            <td>407-4026447-7131527</td>
+                                            <td>2021-12-04</td>
+                                            <td>10:32 pm IST</td>
+                                            <td>Sat</td>
+                                            <td>chandrima</td>
+                                            <td>bengaluru</td>
+                                            <td>karnataka</td>
+                                            <td>SKU:  NV-1DWM-41VX</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>131</th>
+                                            <td>171-5230421-3237921</td>
+                                            <td>2021-12-08</td>
+                                            <td>12:15 am IST</td>
+                                            <td>Wed</td>
+                                            <td>Geetika</td>
+                                            <td>gurugram</td>
+                                            <td>haryana</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>132</th>
+                                            <td>403-2445664-7853913</td>
+                                            <td>2021-12-01</td>
+                                            <td>12:58 pm IST</td>
+                                            <td>Wed</td>
+                                            <td>vvijayakakshmi</td>
+                                            <td>chennai</td>
+                                            <td>tamil nadu</td>
+                                            <td>SKU:  AY-Z7BT-BMVM</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>133</th>
+                                            <td>407-8892478-3863557</td>
+                                            <td>2022-02-14</td>
+                                            <td>7:12 pm IST</td>
+                                            <td>Mon</td>
+                                            <td>Tapan</td>
+                                            <td>ghaziabad</td>
+                                            <td>uttar pradesh</td>
+                                            <td>SKU:  NN-AGEZ-5DUM</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>134</th>
+                                            <td>171-3919731-3769907</td>
+                                            <td>2022-01-25</td>
+                                            <td>11:32 am IST</td>
+                                            <td>Tue</td>
+                                            <td>Deepali</td>
+                                            <td>jodhpur</td>
+                                            <td>rajasthan</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Returned to seller</td>
+                                          </tr>
+                                          <tr>
+                                            <th>135</th>
+                                            <td>171-3733329-6916359</td>
+                                            <td>2021-12-10</td>
+                                            <td>5:53 pm IST</td>
+                                            <td>Fri</td>
+                                            <td>Shahin</td>
+                                            <td>mumbai</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>136</th>
+                                            <td>171-7361479-0297146</td>
+                                            <td>2021-12-10</td>
+                                            <td>11:38 am IST</td>
+                                            <td>Fri</td>
+                                            <td>Amol</td>
+                                            <td>pune</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>4</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>137</th>
+                                            <td>408-9200041-8517139</td>
+                                            <td>2022-01-02</td>
+                                            <td>5:51 pm IST</td>
+                                            <td>Sun</td>
+                                            <td>ROHIT</td>
+                                            <td>secunderabad</td>
+                                            <td>telangana</td>
+                                            <td>SKU:  CR-6E69-UXFW</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>138</th>
+                                            <td>408-3276798-6731502</td>
+                                            <td>2021-11-30</td>
+                                            <td>7:49 pm IST</td>
+                                            <td>Tue</td>
+                                            <td>Kumar</td>
+                                            <td>bengaluru</td>
+                                            <td>karnataka</td>
+                                            <td>SKU:  NN-AGEZ-5DUM</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>139</th>
+                                            <td>405-7588425-0136360</td>
+                                            <td>2021-12-04</td>
+                                            <td>12:43 am IST</td>
+                                            <td>Sat</td>
+                                            <td>Gargi</td>
+                                            <td>kolkata</td>
+                                            <td>west bengal</td>
+                                            <td>SKU:  NV-1DWM-41VX</td>
+                                            <td>1</td>
+                                            <td>47.20</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>140</th>
+                                            <td>406-6034782-6293117</td>
+                                            <td>2021-12-31</td>
+                                            <td>9:55 pm IST</td>
+                                            <td>Fri</td>
+                                            <td>NANDINI</td>
+                                            <td>kolkata</td>
+                                            <td>west bengal</td>
+                                            <td>SKU:  W4-JQ2J-ZUF2</td>
+                                            <td>1</td>
+                                            <td>47.20</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>141</th>
+                                            <td>403-1376026-4537157</td>
+                                            <td>2022-01-30</td>
+                                            <td>7:13 pm IST</td>
+                                            <td>Sun</td>
+                                            <td>ONGC</td>
+                                            <td>vadodara</td>
+                                            <td>gujarat</td>
+                                            <td>SKU:  5B-NW9K-L3AO</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>142</th>
+                                            <td>402-3108828-3083537</td>
+                                            <td>2021-12-29</td>
+                                            <td>8:44 am IST</td>
+                                            <td>Wed</td>
+                                            <td>RAJAT</td>
+                                            <td>punjab</td>
+                                            <td>mohali,</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>143</th>
+                                            <td>171-5110229-2797921</td>
+                                            <td>2022-01-16</td>
+                                            <td>5:23 pm IST</td>
+                                            <td>Sun</td>
+                                            <td>ria</td>
+                                            <td>kolkata</td>
+                                            <td>west bengal</td>
+                                            <td>SKU:  3F-4R9N-Z8NJ</td>
+                                            <td>1</td>
+                                            <td>47.20</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>144</th>
+                                            <td>171-1659664-7877932</td>
+                                            <td>2022-02-23</td>
+                                            <td>9:29 pm IST</td>
+                                            <td>Wed</td>
+                                            <td>Saba</td>
+                                            <td>amroha</td>
+                                            <td>uttar pradesh</td>
+                                            <td>SKU:  CR-6E69-UXFW</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>145</th>
+                                            <td>404-5325305-3342738</td>
+                                            <td>2022-02-09</td>
+                                            <td>7:17 pm IST</td>
+                                            <td>Wed</td>
+                                            <td>Poonam</td>
+                                            <td>mumbai</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  5B-NW9K-L3AO</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>146</th>
+                                            <td>408-4117801-6732368</td>
+                                            <td>2022-01-13</td>
+                                            <td>7:35 pm IST</td>
+                                            <td>Thu</td>
+                                            <td>VAISHALI</td>
+                                            <td>lucknow</td>
+                                            <td>uttar pradesh</td>
+                                            <td>SKU:  PG-WS6J-89DG</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>147</th>
+                                            <td>405-0409316-6263510</td>
+                                            <td>2021-12-20</td>
+                                            <td>8:29 pm IST</td>
+                                            <td>Mon</td>
+                                            <td>Faruk</td>
+                                            <td>burdwan</td>
+                                            <td>west bengal</td>
+                                            <td>SKU:  3F-4R9N-Z8NJ</td>
+                                            <td>1</td>
+                                            <td>60.18</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>148</th>
+                                            <td>407-0369001-6370762</td>
+                                            <td>2022-01-09</td>
+                                            <td>12:28 am IST</td>
+                                            <td>Sun</td>
+                                            <td>pavithra</td>
+                                            <td>chennai</td>
+                                            <td>tamil nadu</td>
+                                            <td>SKU:  G4-B5GQ-8V30</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>149</th>
+                                            <td>402-1369108-5988348</td>
+                                            <td>2021-12-09</td>
+                                            <td>11:29 am IST</td>
+                                            <td>Thu</td>
+                                            <td>Mariatta</td>
+                                            <td>kodambakkam chennai</td>
+                                            <td>tamil nadu</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>150</th>
+                                            <td>405-7352232-5348320</td>
+                                            <td>2021-12-19</td>
+                                            <td>7:41 am IST</td>
+                                            <td>Sun</td>
+                                            <td>DIVYA</td>
+                                            <td>bengaluru</td>
+                                            <td>karnataka</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Returned to seller</td>
+                                          </tr>
+                                          <tr>
+                                            <th>151</th>
+                                            <td>171-8930811-8770760</td>
+                                            <td>2022-02-21</td>
+                                            <td>7:52 pm IST</td>
+                                            <td>Mon</td>
+                                            <td>Shishir</td>
+                                            <td>allahabad</td>
+                                            <td>uttar pradesh</td>
+                                            <td>SKU:  4V-I7XD-JQVR</td>
+                                            <td>1</td>
+                                            <td>60.18</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>152</th>
+                                            <td>404-5892855-1521926</td>
+                                            <td>2021-12-15</td>
+                                            <td>11:11 am IST</td>
+                                            <td>Wed</td>
+                                            <td>veena</td>
+                                            <td>bengaluru</td>
+                                            <td>karnataka</td>
+                                            <td>SKU:  V6-VUWR-856W</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>153</th>
+                                            <td>403-0543607-1044310</td>
+                                            <td>2022-02-01</td>
+                                            <td>6:45 am IST</td>
+                                            <td>Tue</td>
+                                            <td>Gita</td>
+                                            <td>chennai</td>
+                                            <td>tamil nadu</td>
+                                            <td>SKU:  CR-6E69-UXFW</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>154</th>
+                                            <td>171-4338001-7654754</td>
+                                            <td>2022-01-09</td>
+                                            <td>9:33 pm IST</td>
+                                            <td>Sun</td>
+                                            <td>srisoma</td>
+                                            <td>new delhi</td>
+                                            <td>delhi</td>
+                                            <td>SKU:  U1-8YOK-510E</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>155</th>
+                                            <td>408-5721047-6522728</td>
+                                            <td>2021-12-12</td>
+                                            <td>7:09 pm IST</td>
+                                            <td>Sun</td>
+                                            <td>Ashna</td>
+                                            <td>chandigarh</td>
+                                            <td>chandigarh</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>156</th>
+                                            <td>402-5940762-2914747</td>
+                                            <td>2022-01-02</td>
+                                            <td>3:01 pm IST</td>
+                                            <td>Sun</td>
+                                            <td>Swathi</td>
+                                            <td>visakhapatnam</td>
+                                            <td>andhra pradesh</td>
+                                            <td>SKU:  0M-RFE6-443C</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>157</th>
+                                            <td>407-6814126-3628337</td>
+                                            <td>2021-12-08</td>
+                                            <td>11:54 pm IST</td>
+                                            <td>Wed</td>
+                                            <td>Aarti</td>
+                                            <td>bilimora</td>
+                                            <td>gujarat</td>
+                                            <td>SKU:  S1-A92Q-JU3X</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>158</th>
+                                            <td>171-3007462-1281169</td>
+                                            <td>2022-02-17</td>
+                                            <td>9:14 pm IST</td>
+                                            <td>Thu</td>
+                                            <td>Captain</td>
+                                            <td>kolkata</td>
+                                            <td>west bengal</td>
+                                            <td>SKU:  78-ZYA1-UMZH</td>
+                                            <td>1</td>
+                                            <td>47.20</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>159</th>
+                                            <td>403-8215280-0912306</td>
+                                            <td>2022-01-30</td>
+                                            <td>1:37 pm IST</td>
+                                            <td>Sun</td>
+                                            <td>Gita</td>
+                                            <td>chennai</td>
+                                            <td>tamil nadu</td>
+                                            <td>SKU:  CR-6E69-UXFW</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Returned to seller</td>
+                                          </tr>
+                                          <tr>
+                                            <th>160</th>
+                                            <td>402-2278272-1998728</td>
+                                            <td>2021-12-10</td>
+                                            <td>4:15 pm IST</td>
+                                            <td>Fri</td>
+                                            <td>Dalreen</td>
+                                            <td>bengaluru</td>
+                                            <td>karnataka</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>161</th>
+                                            <td>405-3911719-8266724</td>
+                                            <td>2021-12-01</td>
+                                            <td>6:53 pm IST</td>
+                                            <td>Wed</td>
+                                            <td>ANIL</td>
+                                            <td>kanpur</td>
+                                            <td>uttar pradesh</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>162</th>
+                                            <td>406-5755913-6641938</td>
+                                            <td>2022-02-17</td>
+                                            <td>8:47 am IST</td>
+                                            <td>Thu</td>
+                                            <td>Shikha</td>
+                                            <td>navi mumbai</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  WR-ANCX-U28C</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>163</th>
+                                            <td>171-7565385-5722750</td>
+                                            <td>2022-01-20</td>
+                                            <td>10:57 am IST</td>
+                                            <td>Thu</td>
+                                            <td>Vadim</td>
+                                            <td>new delhi</td>
+                                            <td>delhi</td>
+                                            <td>SKU:  2X-3C0F-KNJE</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>164</th>
+                                            <td>402-8044719-8889119</td>
+                                            <td>2021-12-04</td>
+                                            <td>10:28 pm IST</td>
+                                            <td>Sat</td>
+                                            <td>Swathi</td>
+                                            <td>visakhapatnam</td>
+                                            <td>andhra pradesh</td>
+                                            <td>SKU:  3F-4R9N-Z8NJ</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>165</th>
+                                            <td>402-1808225-2809140</td>
+                                            <td>2021-12-25</td>
+                                            <td>4:03 pm IST</td>
+                                            <td>Sat</td>
+                                            <td>User</td>
+                                            <td>solan</td>
+                                            <td>himachal pradesh</td>
+                                            <td>SKU:  S1-A92Q-JU3X</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>166</th>
+                                            <td>171-2829978-1258758</td>
+                                            <td>2021-12-13</td>
+                                            <td>11:30 am IST</td>
+                                            <td>Mon</td>
+                                            <td>Shahin</td>
+                                            <td>mumbai</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  DN-0WDX-VYOT</td>
+                                            <td>3</td>
+                                            <td>84.96</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>167</th>
+                                            <td>402-3045457-5360311</td>
+                                            <td>2021-12-01</td>
+                                            <td>12:18 pm IST</td>
+                                            <td>Wed</td>
+                                            <td>Sharmistha</td>
+                                            <td>dehradun</td>
+                                            <td>uttarakhand</td>
+                                            <td>SKU:  SB-WDQN-SDN9</td>
+                                            <td>1</td>
+                                            <td>114.46</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>168</th>
+                                            <td>408-2260162-8323567</td>
+                                            <td>2021-12-09</td>
+                                            <td>6:55 pm IST</td>
+                                            <td>Thu</td>
+                                            <td>shashank</td>
+                                            <td>durg</td>
+                                            <td>chhattisgarh</td>
+                                            <td>SKU:  SB-WDQN-SDN9</td>
+                                            <td>1</td>
+                                            <td>105.02</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>169</th>
+                                            <td>403-5664951-8941100</td>
+                                            <td>2022-02-23</td>
+                                            <td>12:43 am IST</td>
+                                            <td>Wed</td>
+                                            <td>Jayeta</td>
+                                            <td>kolkata</td>
+                                            <td>west bengal</td>
+                                            <td>SKU:  N8-YFZF-P74I</td>
+                                            <td>1</td>
+                                            <td>80.24</td>
+                                            <td>Cash On Delivery</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                          <tr>
+                                            <th>170</th>
+                                            <td>402-4845680-8041921</td>
+                                            <td>2021-12-26</td>
+                                            <td>6:21 pm IST</td>
+                                            <td>Sun</td>
+                                            <td>Varun</td>
+                                            <td>mumbai</td>
+                                            <td>maharashtra</td>
+                                            <td>SKU:  2X-3C0F-KNJE</td>
+                                            <td>1</td>
+                                            <td>84.96</td>
+                                            <td>No</td>
+                                            <td>Delivered to buyer</td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; Your Website 2022</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        {% block scripts %}
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="{{url_for('static', filename='js/db_scripts.js')}}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="{{url_for('static', filename='assets/demo/chart-area-demo.js')}}"></script>
+        <script src="{{url_for('static', filename='assets/demo/chart-bar-demo.js')}}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+        <script src="{{url_for('static', filename='js/datatables-simple-demo.js')}}"></script>
+        {% endblock %}
+    </body>
+</html>

@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Total_Sales & Shiping_Fee Overview</title>
+            <script type="text/javascript" src="https://assets.pyecharts.org/assets/echarts.min.js"></script>
+
+    
+</head>
+<body>
+        <style>
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+        }
+
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 12px 16px;
+            transition: 0.3s;
+        }
+
+        .tab button:hover {
+            background-color: #ddd;
+        }
+
+        .tab button.active {
+            background-color: #ccc;
+        }
+
+        .chart-container {
+            display: none;
+            padding: 6px 12px;
+            border-top: none;
+        }
+    </style>
+    <div class="tab">
+            <button class="tablinks" onclick="showChart(event, 'f937faceeeb74314a4e4417fd22ab511')">Total Sales & Shipping fee by Date</button>
+            <button class="tablinks" onclick="showChart(event, 'eda0202bada045c3aa23d32ae5ece7e3')">Sales Calendar</button>
+    </div>
+
+    <div class="box">
+                <div id="f937faceeeb74314a4e4417fd22ab511" class="chart-container" style="width:900px; height:500px;"></div>
+    <script>
+        var chart_f937faceeeb74314a4e4417fd22ab511 = echarts.init(
+            document.getElementById('f937faceeeb74314a4e4417fd22ab511'), 'white', {renderer: 'canvas'});
+        var option_f937faceeeb74314a4e4417fd22ab511 = {
+    "animation": true,
+    "animationThreshold": 2000,
+    "animationDuration": 1000,
+    "animationEasing": "cubicOut",
+    "animationDelay": 0,
+    "animationDurationUpdate": 300,
+    "animationEasingUpdate": "cubicOut",
+    "animationDelayUpdate": 0,
+    "color": [
+        "#c23531",
+        "#2f4554",
+        "#61a0a8",
+        "#d48265",
+        "#749f83",
+        "#ca8622",
+        "#bda29a",
+        "#6e7074",
+        "#546570",
+        "#c4ccd3",
+        "#f05b72",
+        "#ef5b9c",
+        "#f47920",
+        "#905a3d",
+        "#fab27b",
+        "#2a5caa",
+        "#444693",
+        "#726930",
+        "#b2d235",
+        "#6d8346",
+        "#ac6767",
+        "#1d953f",
+        "#6950a1",
+        "#918597"
+    ],
+    "series": [
+        {
+            "type": "bar",
+            "name": "item_total",
+            "legendHoverLink": true,
+            "data": [
+                9344.0,
+                7713.0,
+                2281.0,
+                2978.0,
+                8223.0,
+                9667.0,
+                13310.0,
+                15421.0,
+                30732.0
+            ],
+            "showBackground": false,
+            "barMinHeight": 0,
+            "barCategoryGap": "20%",
+            "barGap": "30%",
+            "large": false,
+            "largeThreshold": 400,
+            "seriesLayoutBy": "column",
+            "datasetIndex": 0,
+            "clip": true,
+            "zlevel": 0,
+            "z": 2,
+            "label": {
+                "show": true,
+                "position": "top",
+                "margin": 8
+            }
+        },
+        {
+            "type": "bar",
+            "name": "shipping_fee",
+            "legendHoverLink": true,
+            "data": [
+                1552.0,
+                1042.0,
+                680.0,
+                595.0,
+                1097.0,
+                1479.0,
+                1969.0,
+                2695.0,
+                3389.0
+            ],
+            "showBackground": false,
+            "barMinHeight": 0,
+            "barCategoryGap": "20%",
+            "barGap": "30%",
+            "large": false,
+            "largeThreshold": 400,
+            "seriesLayoutBy": "column",
+            "datasetIndex": 0,
+            "clip": true,
+            "zlevel": 0,
+            "z": 2,
+            "label": {
+                "show": true,
+                "position": "top",
+                "margin": 8
+            }
+        }
+    ],
+    "legend": [
+        {
+            "data": [
+                "item_total",
+                "shipping_fee"
+            ],
+            "selected": {
+                "item_total": true,
+                "shipping_fee": true
+            },
+            "show": true,
+            "padding": 5,
+            "itemGap": 10,
+            "itemWidth": 25,
+            "itemHeight": 14
+        }
+    ],
+    "tooltip": {
+        "show": true,
+        "trigger": "item",
+        "triggerOn": "mousemove|click",
+        "axisPointer": {
+            "type": "line"
+        },
+        "showContent": true,
+        "alwaysShowContent": false,
+        "showDelay": 0,
+        "hideDelay": 100,
+        "textStyle": {
+            "fontSize": 14
+        },
+        "borderWidth": 0,
+        "padding": 5
+    },
+    "xAxis": [
+        {
+            "show": true,
+            "scale": false,
+            "nameLocation": "end",
+            "nameGap": 15,
+            "gridIndex": 0,
+            "inverse": false,
+            "offset": 0,
+            "splitNumber": 5,
+            "minInterval": 0,
+            "splitLine": {
+                "show": false,
+                "lineStyle": {
+                    "show": true,
+                    "width": 1,
+                    "opacity": 1,
+                    "curveness": 0,
+                    "type": "solid"
+                }
+            },
+            "data": [
+                "Jan",
+                "Feb",
+                "Jun",
+                "Jul",
+                "Aug",
+                "Sept",
+                "Oct",
+                "Nov",
+                "Dec"
+            ]
+        }
+    ],
+    "yAxis": [
+        {
+            "show": true,
+            "scale": false,
+            "nameLocation": "end",
+            "nameGap": 15,
+            "gridIndex": 0,
+            "inverse": false,
+            "offset": 0,
+            "splitNumber": 5,
+            "minInterval": 0,
+            "splitLine": {
+                "show": false,
+                "lineStyle": {
+                    "show": true,
+                    "width": 1,
+                    "opacity": 1,
+                    "curveness": 0,
+                    "type": "solid"
+                }
+            }
+        }
+    ],
+    "title": [
+        {
+            "text": "Total Sales & Shipping fee by Month",
+            "subtext": "in \u20b9",
+            "padding": 5,
+            "itemGap": 10
+        }
+    ]
+};
+        chart_f937faceeeb74314a4e4417fd22ab511.setOption(option_f937faceeeb74314a4e4417fd22ab511);
+    </script>
+                <div id="eda0202bada045c3aa23d32ae5ece7e3" class="chart-container" style="width:900px; height:500px;"></div>
+    <script>
+        var chart_eda0202bada045c3aa23d32ae5ece7e3 = echarts.init(
+            document.getElementById('eda0202bada045c3aa23d32ae5ece7e3'), 'white', {renderer: 'canvas'});
+        var option_eda0202bada045c3aa23d32ae5ece7e3 = {
+    "animation": true,
+    "animationThreshold": 2000,
+    "animationDuration": 1000,
+    "animationEasing": "cubicOut",
+    "animationDelay": 0,
+    "animationDurationUpdate": 300,
+    "animationEasingUpdate": "cubicOut",
+    "animationDelayUpdate": 0,
+    "color": [
+        "#c23531",
+        "#2f4554",
+        "#61a0a8",
+        "#d48265",
+        "#749f83",
+        "#ca8622",
+        "#bda29a",
+        "#6e7074",
+        "#546570",
+        "#c4ccd3",
+        "#f05b72",
+        "#ef5b9c",
+        "#f47920",
+        "#905a3d",
+        "#fab27b",
+        "#2a5caa",
+        "#444693",
+        "#726930",
+        "#b2d235",
+        "#6d8346",
+        "#ac6767",
+        "#1d953f",
+        "#6950a1",
+        "#918597"
+    ],
+    "series": [
+        {
+            "type": "heatmap",
+            "coordinateSystem": "calendar",
+            "data": [
+                [
+                    "2021-06-13T00:00:00",
+                    175.0
+                ],
+                [
+                    "2021-06-16T00:00:00",
+                    525.0
+                ],
+                [
+                    "2021-06-17T00:00:00",
+                    200.0
+                ],
+                [
+                    "2021-06-23T00:00:00",
+                    449.0
+                ],
+                [
+                    "2021-06-25T00:00:00",
+                    583.0
+                ],
+                [
+                    "2021-06-28T00:00:00",
+                    349.0
+                ],
+                [
+                    "2021-07-13T00:00:00",
+                    349.0
+                ],
+                [
+                    "2021-07-18T00:00:00",
+                    449.0
+                ],
+                [
+                    "2021-07-21T00:00:00",
+                    549.0
+                ],
+                [
+                    "2021-07-22T00:00:00",
+                    250.0
+                ],
+                [
+                    "2021-07-26T00:00:00",
+                    449.0
+                ],
+                [
+                    "2021-07-28T00:00:00",
+                    583.0
+                ],
+                [
+                    "2021-07-29T00:00:00",
+                    349.0
+                ],
+                [
+                    "2021-08-04T00:00:00",
+                    449.0
+                ],
+                [
+                    "2021-08-06T00:00:00",
+                    449.0
+                ],
+                [
+                    "2021-08-08T00:00:00",
+                    399.0
+                ],
+                [
+                    "2021-08-09T00:00:00",
+                    1099.0
+                ],
+                [
+                    "2021-08-12T00:00:00",
+                    583.0
+                ],
+                [
+                    "2021-08-13T00:00:00",
+                    1099.0
+                ],
+                [
+                    "2021-08-16T00:00:00",
+                    1349.0
+                ],
+                [
+                    "2021-08-18T00:00:00",
+                    399.0
+                ],
+                [
+                    "2021-08-20T00:00:00",
+                    1099.0
+                ],
+                [
+                    "2021-08-24T00:00:00",
+                    399.0
+                ],
+                [
+                    "2021-08-25T00:00:00",
+                    649.0
+                ],
+                [
+                    "2021-08-29T00:00:00",
+                    250.0
+                ],
+                [
+                    "2021-09-01T00:00:00",
+                    549.0
+                ],
+                [
+                    "2021-09-02T00:00:00",
+                    399.0
+                ],
+                [
+                    "2021-09-04T00:00:00",
+                    449.0
+                ],
+                [
+                    "2021-09-05T00:00:00",
+                    1748.0
+                ],
+                [
+                    "2021-09-06T00:00:00",
+                    1198.0
+                ],
+                [
+                    "2021-09-07T00:00:00",
+                    399.0
+                ],
+                [
+                    "2021-09-10T00:00:00",
+                    399.0
+                ],
+                [
+                    "2021-09-16T00:00:00",
+                    583.0
+                ],
+                [
+                    "2021-09-18T00:00:00",
+                    898.0
+                ],
+                [
+                    "2021-09-19T00:00:00",
+                    699.0
+                ],
+                [
+                    "2021-09-20T00:00:00",
+                    399.0
+                ],
+                [
+                    "2021-09-23T00:00:00",
+                    449.0
+                ],
+                [
+                    "2021-09-28T00:00:00",
+                    1099.0
+                ],
+                [
+                    "2021-09-29T00:00:00",
+                    399.0
+                ],
+                [
+                    "2021-10-01T00:00:00",
+                    1048.0
+                ],
+                [
+                    "2021-10-04T00:00:00",
+                    1548.0
+                ],
+                [
+                    "2021-10-05T00:00:00",
+                    583.0
+                ],
+                [
+                    "2021-10-07T00:00:00",
+                    1232.0
+                ],
+                [
+                    "2021-10-09T00:00:00",
+                    549.0
+                ],
+                [
+                    "2021-10-10T00:00:00",
+                    399.0
+                ],
+                [
+                    "2021-10-11T00:00:00",
+                    449.0
+                ],
+                [
+                    "2021-10-14T00:00:00",
+                    583.0
+                ],
+                [
+                    "2021-10-15T00:00:00",
+                    399.0
+                ],
+                [
+                    "2021-10-16T00:00:00",
+                    848.0
+                ],
+                [
+                    "2021-10-17T00:00:00",
+                    898.0
+                ],
+                [
+                    "2021-10-19T00:00:00",
+                    449.0
+                ],
+                [
+                    "2021-10-20T00:00:00",
+                    399.0
+                ],
+                [
+                    "2021-10-22T00:00:00",
+                    449.0
+                ],
+                [
+                    "2021-10-24T00:00:00",
+                    549.0
+                ],
+                [
+                    "2021-10-26T00:00:00",
+                    948.0
+                ],
+                [
+                    "2021-10-28T00:00:00",
+                    250.0
+                ],
+                [
+                    "2021-10-29T00:00:00",
+                    898.0
+                ],
+                [
+                    "2021-10-31T00:00:00",
+                    833.0
+                ],
+                [
+                    "2021-11-01T00:00:00",
+                    399.0
+                ],
+                [
+                    "2021-11-04T00:00:00",
+                    798.0
+                ],
+                [
+                    "2021-11-07T00:00:00",
+                    449.0
+                ],
+                [
+                    "2021-11-09T00:00:00",
+                    583.0
+                ],
+                [
+                    "2021-11-10T00:00:00",
+                    1297.0
+                ],
+                [
+                    "2021-11-11T00:00:00",
+                    1299.0
+                ],
+                [
+                    "2021-11-12T00:00:00",
+                    1299.0
+                ],
+                [
+                    "2021-11-13T00:00:00",
+                    1297.0
+                ],
+                [
+                    "2021-11-15T00:00:00",
+                    399.0
+                ],
+                [
+                    "2021-11-16T00:00:00",
+                    848.0
+                ],
+                [
+                    "2021-11-18T00:00:00",
+                    1746.0
+                ],
+                [
+                    "2021-11-20T00:00:00",
+                    449.0
+                ],
+                [
+                    "2021-11-21T00:00:00",
+                    399.0
+                ],
+                [
+                    "2021-11-25T00:00:00",
+                    399.0
+                ],
+                [
+                    "2021-11-26T00:00:00",
+                    1166.0
+                ],
+                [
+                    "2021-11-27T00:00:00",
+                    898.0
+                ],
+                [
+                    "2021-11-28T00:00:00",
+                    449.0
+                ],
+                [
+                    "2021-11-29T00:00:00",
+                    798.0
+                ],
+                [
+                    "2021-11-30T00:00:00",
+                    449.0
+                ],
+                [
+                    "2021-12-01T00:00:00",
+                    2596.0
+                ],
+                [
+                    "2021-12-04T00:00:00",
+                    1896.0
+                ],
+                [
+                    "2021-12-06T00:00:00",
+                    2547.0
+                ],
+                [
+                    "2021-12-08T00:00:00",
+                    1247.0
+                ],
+                [
+                    "2021-12-09T00:00:00",
+                    3496.0
+                ],
+                [
+                    "2021-12-10T00:00:00",
+                    2694.0
+                ],
+                [
+                    "2021-12-12T00:00:00",
+                    583.0
+                ],
+                [
+                    "2021-12-13T00:00:00",
+                    1796.0
+                ],
+                [
+                    "2021-12-15T00:00:00",
+                    549.0
+                ],
+                [
+                    "2021-12-17T00:00:00",
+                    549.0
+                ],
+                [
+                    "2021-12-19T00:00:00",
+                    583.0
+                ],
+                [
+                    "2021-12-20T00:00:00",
+                    475.0
+                ],
+                [
+                    "2021-12-21T00:00:00",
+                    7794.0
+                ],
+                [
+                    "2021-12-23T00:00:00",
+                    583.0
+                ],
+                [
+                    "2021-12-25T00:00:00",
+                    399.0
+                ],
+                [
+                    "2021-12-26T00:00:00",
+                    1748.0
+                ],
+                [
+                    "2021-12-29T00:00:00",
+                    798.0
+                ],
+                [
+                    "2021-12-31T00:00:00",
+                    399.0
+                ],
+                [
+                    "2022-01-02T00:00:00",
+                    924.0
+                ],
+                [
+                    "2022-01-03T00:00:00",
+                    649.0
+                ],
+                [
+                    "2022-01-09T00:00:00",
+                    848.0
+                ],
+                [
+                    "2022-01-11T00:00:00",
+                    449.0
+                ],
+                [
+                    "2022-01-13T00:00:00",
+                    449.0
+                ],
+                [
+                    "2022-01-16T00:00:00",
+                    475.0
+                ],
+                [
+                    "2022-01-19T00:00:00",
+                    449.0
+                ],
+                [
+                    "2022-01-20T00:00:00",
+                    924.0
+                ],
+                [
+                    "2022-01-23T00:00:00",
+                    583.0
+                ],
+                [
+                    "2022-01-25T00:00:00",
+                    1032.0
+                ],
+                [
+                    "2022-01-27T00:00:00",
+                    549.0
+                ],
+                [
+                    "2022-01-30T00:00:00",
+                    2014.0
+                ],
+                [
+                    "2022-02-01T00:00:00",
+                    449.0
+                ],
+                [
+                    "2022-02-02T00:00:00",
+                    449.0
+                ],
+                [
+                    "2022-02-04T00:00:00",
+                    1499.0
+                ],
+                [
+                    "2022-02-09T00:00:00",
+                    349.0
+                ],
+                [
+                    "2022-02-10T00:00:00",
+                    475.0
+                ],
+                [
+                    "2022-02-14T00:00:00",
+                    449.0
+                ],
+                [
+                    "2022-02-17T00:00:00",
+                    898.0
+                ],
+                [
+                    "2022-02-21T00:00:00",
+                    349.0
+                ],
+                [
+                    "2022-02-23T00:00:00",
+                    1948.0
+                ],
+                [
+                    "2022-02-25T00:00:00",
+                    848.0
+                ]
+            ],
+            "label": {
+                "show": true,
+                "position": "top",
+                "margin": 8
+            }
+        }
+    ],
+    "legend": [
+        {
+            "data": [
+                ""
+            ],
+            "selected": {
+                "": true
+            },
+            "show": false,
+            "padding": 5,
+            "itemGap": 10,
+            "itemWidth": 25,
+            "itemHeight": 14
+        }
+    ],
+    "tooltip": {
+        "show": true,
+        "trigger": "item",
+        "triggerOn": "mousemove|click",
+        "axisPointer": {
+            "type": "line"
+        },
+        "showContent": true,
+        "alwaysShowContent": false,
+        "showDelay": 0,
+        "hideDelay": 100,
+        "textStyle": {
+            "fontSize": 14
+        },
+        "borderWidth": 0,
+        "padding": 5
+    },
+    "calendar": {
+        "width": "auto",
+        "orient": "horizontal",
+        "range": "2021",
+        "cellSize": 20
+    },
+    "title": [
+        {
+            "text": "Sales Calendar",
+            "subtext": "in \u20b9",
+            "padding": 5,
+            "itemGap": 10
+        }
+    ],
+    "visualMap": {
+        "show": true,
+        "type": "continuous",
+        "min": 175.0,
+        "max": 3897.0,
+        "inRange": {
+            "color": [
+                "#50a3ba",
+                "#eac763",
+                "#d94e5d"
+            ]
+        },
+        "calculable": true,
+        "inverse": false,
+        "splitNumber": 5,
+        "orient": "horizontal",
+        "left": "100p",
+        "top": "230px",
+        "showLabel": true,
+        "itemWidth": 20,
+        "itemHeight": 140,
+        "borderWidth": 0
+    }
+};
+        chart_eda0202bada045c3aa23d32ae5ece7e3.setOption(option_eda0202bada045c3aa23d32ae5ece7e3);
+    </script>
+    </div>
+
+    <script>
+    </script>
+    <script>
+        (function() {
+            containers = document.getElementsByClassName("chart-container");
+            if(containers.length > 0) {
+                containers[0].style.display = "block";
+            }
+        })()
+
+        function showChart(evt, chartID) {
+            let containers = document.getElementsByClassName("chart-container");
+            for (let i = 0; i < containers.length; i++) {
+                containers[i].style.display = "none";
+            }
+
+            let tablinks = document.getElementsByClassName("tablinks");
+            for (let i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = "tablinks";
+            }
+
+            document.getElementById(chartID).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+    </script>
+</body>
+</html>
