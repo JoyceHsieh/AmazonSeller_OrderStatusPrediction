@@ -5,7 +5,6 @@ from flask_bootstrap import Bootstrap
 from flask import render_template, redirect, url_for, request, send_from_directory, flash
 import pandas as pd
 import os
-import requests
 import json
 import sklearn
 
