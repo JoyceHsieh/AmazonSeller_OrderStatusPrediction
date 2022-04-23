@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'amazonseller-orderstatusprediction'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0617A4ABD6394C7BB6CBBC936289E2AF }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_E319B0B47EE24BD8A0385E37081654E7 }}
