@@ -3,4 +3,5 @@ joblib
 pandas
 flask_bootstrap
 sklearn
+dill
 
