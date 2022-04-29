@@ -79,7 +79,7 @@ def knnmodel():
         print(Kscaler_data)
         
         
-        model_prediction = logclf_model.predict(Kscaler_data)
+        model_prediction = knn_model.predict(Kscaler_data)
         if model_prediction == 0:
             result='Delivered to buyer'
         else:
@@ -109,7 +109,7 @@ def lgmodel():
         print(lgscaler_data)
         
         
-        model_prediction = knn_model.predict(lgscaler_data)
+        model_prediction = logclf_model.predict(lgscaler_data)
         if model_prediction == 0:
             result='Delivered to buyer'
         else:
